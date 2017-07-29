@@ -70,6 +70,8 @@ pause;
 %  To give you an idea of the network's output, you can also run
 %  through the examples one at the a time to see what it is predicting.
 
+result_str = ['wrong'; 'correct'];
+
 %  Randomly permute examples
 rp = randperm(m);
 
@@ -79,7 +81,9 @@ for i = 1:m
     displayData(X(rp(i), :));
 
     pred = predict(Theta1, Theta2, X(rp(i),:));
-    fprintf('\nNeural Network Prediction: %d (digit %d)\n', pred, mod(pred, 10));
+    fprintf('\nNeural Network Prediction: %d (digit %d), actual: %d (digit %d), the result is %s\n',
+            pred, mod(pred, 10), y(rp(i)), mod(y(rp(i)), 10),
+            result_str((pred == y(rp(i))) + 1, :));
     
     % Pause with quit option
     s = input('Paused - press enter to continue, q to exit:','s');

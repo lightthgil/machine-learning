@@ -22,9 +22,11 @@ p = zeros(size(X, 1), 1);
 %
 
 
-
-
-
+z2 = [ones(m, 1) X] * Theta1';
+a2 = sigmoid(z2);
+z3 = [ones(m, 1) a2] * Theta2';
+a3 = sigmoid(z3);
+[pro, p] = max(a3, [], 2);
 
 
 
