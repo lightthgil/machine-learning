@@ -63,22 +63,28 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 
+a1 = [ones(m,1), X];  %[5000 401]
+z2 = a1 * Theta1';    %[5000 25]
+a2 = sigmoid(z2);     %[5000 25]
+a2 = [ones(m, 1), a2];  %[5000 26]
+z3 = a2 * Theta2';      %[5000 10]
+a3 = sigmoid(z3);       %[5000 10]
 
+Y = eye(num_labels)(y,:); %把原先label表示的y变成矩阵模式 [5000 10]
 
+J = (1/m)*sum(sum(-Y.*log(a3) -(1 - Y) .* log(1 - a3)));
+J = J + lambda/(2*m)*(sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)));
 
+d3 = a3 - Y;  %[5000 10]
+Delta2 = d3'*a2; %[10 26]
+d2 = d3 * Theta2(:,2:end) .* sigmoidGradient(z2);
+Delta1 = d2' * a1;
 
+Theta1_grad = (1/m)*Delta1;
+Theta2_grad = (1/m)*Delta2;
 
-
-
-
-
-
-
-
-
-
-
-
+Theta1_grad(:,2:end) = Theta1_grad(:,2:end) + ((lambda/m)*Theta1(:,2:end));
+Theta2_grad(:,2:end) = Theta2_grad(:,2:end) + ((lambda/m)*Theta2(:,2:end));
 
 % -------------------------------------------------------------
 
