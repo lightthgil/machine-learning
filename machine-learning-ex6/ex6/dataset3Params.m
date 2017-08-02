@@ -24,10 +24,21 @@ sigma = 0.3;
 %
 
 
+C_try=[0.01; 0.03; 0.1; 0.3; 1; 3; 10; 30];
+sigma_try=[0.01; 0.03; 0.1; 0.3; 1; 3; 10; 30];
+mu = zeros(length(C_try), length(sigma_try));
 
+for i = 1:length(C_try)
+  for j = 1:length(sigma_try)
+    model= svmTrain(X, y, C_try(i), @(x1, x2)gaussianKernel(x1, x2, sigma_try(j))); 
+    predictions = svmPredict(model, Xval);
+    mu(i,j) = mean(double(predictions ~= yval));
+  end
+end
 
-
-
+[row,column]=find(mu==min(min(mu)));
+C = C_try(row);
+sigma = sigma_try(column);
 
 % =========================================================================
 
