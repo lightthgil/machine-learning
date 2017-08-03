@@ -21,10 +21,14 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
-
-
-
-
+final_dist = nan*ones(size(X,1),1); %先将距离非数字，方便后续计算
+for i = 1 : K
+  cent = centroids(i,:);
+  cur_dist = sum((X-cent).^2, 2);  %距离
+  [final_dist, min_dist_index] = min([cur_dist, final_dist], [], 2);  %计算最小值，因为一开始初始化final_dist为非数字，所以必须用min函数，不能用<判断
+  is_closer = min_dist_index == 1; %找出缩小的行
+  idx(is_closer) = i;
+end
 
 
 % =============================================================
