@@ -26,13 +26,17 @@ for epsilon = min(pval):stepsize:max(pval)
 
 
 
+    cvPredictions = pval<epsilon;
+
+    tp = sum((cvPredictions == 1)&(yval == 1));
+    fp = sum((cvPredictions == 1)&(yval == 0));
+    fn = sum((cvPredictions == 0)&(yval == 1));
 
 
+    prec = tp/(tp+fp+1e-10); %+1e-10 to solve division by zero
+    rec = tp/(tp+fn+1e-10); %+1e-10 to solve division by zero
 
-
-
-
-
+    F1 = 2*prec*rec/(prec+rec+1e-10); %+1e-10 to solve division by zero
 
 
     % =============================================================
